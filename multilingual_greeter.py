@@ -35,7 +35,7 @@ def language_input() -> int:
 
     :return: An integer representing the language choice made by the user
     """
-    lang_choice = int(input('Please provide your language choice:'))
+    lang_choice = int(input())
     return lang_choice
 
 
