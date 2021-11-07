@@ -95,14 +95,80 @@ def greet(name: str, greetings_options: Dict[int, str], lang_choice: int) -> Non
     """
     print(greetings_options.get(lang_choice), name)
 
+def mode_input():
+    return input('Please select a mode - 1-Admin mode 2-User mode 0-Exit:')
+
+def add_mod_fn():
+    return input('Please select an option - 1-add 2-modify 3-view 0-go back:')
+
+def add_to_all_dicts():
+    input_lang = input('Enter the new language name:')
+    if(input_lang not in lang_dict.values()):
+        new_key = max(lang_dict.keys()) + 1
+        lang_dict[new_key] = input_lang
+        input_name_prompt = input('Enter name prompt in the new language:')
+        name_prompt_dict[new_key] = input_name_prompt
+        input_greetings_dict = input('Enter greetings in the new language:')
+        greetings_dict[new_key] = input_greetings_dict
+        return input_lang, name_prompt_dict, greetings_dict
+    else:
+        print('The language already exists!')
+        return input_lang, name_prompt_dict, greetings_dict
+
+def modify_in_all_dicts():
+    input_lang_key = int(input('Enter the existing language key to modify:'))
+    if input_lang_key in lang_dict:
+        lang_dict[input_lang_key] = input('Enter the existing language:')
+        name_prompt_dict[input_lang_key] = input('Enter name prompt in the existing language:')
+        greetings_dict[input_lang_key] = input('Enter greetings in the new language:')
+        print('Entries have been updated')
+    else:
+        print('Invalid input')
+    return lang_dict, name_prompt_dict, greetings_dict
 
 if __name__ == '__main__':
-    print_language_options(lang_dict)
-    chosen_lang = language_input()
-    while language_choice_is_valid(lang_dict, chosen_lang) is False:
-        print("Invalid selection. Try again.")
-        chosen_lang = language_input()
 
-    selected_prompt = f"{get_name_input(name_prompt_dict, chosen_lang)} \n"
-    chosen_name = name_input(selected_prompt)
-    greet(chosen_name, greetings_dict, chosen_lang)
+    while True:
+        mode_opt = mode_input()
+        if mode_opt == '1':#1-admin 2-user
+            add_mod_view = add_mod_fn()
+            while add_mod_view == '1' or add_mod_view == '2' or add_mod_view == '0' or add_mod_view == '3':
+                if add_mod_view == '1':#1-add 2-modify 3-view
+                    lang_dict, name_prompt_dict, greetings_dict = add_to_all_dicts()
+                    break
+                elif add_mod_view == '2':#1-add 2-modify 3-view
+                    lang_dict, name_prompt_dict, greetings_dict = modify_in_all_dicts()
+                    break
+                elif add_mod_view == '3':#1-add 2-modify 3-view
+
+                    for key,value in lang_dict.items():
+                        print(key,value, end=" ")
+                    print('\n')
+                    for key, value in name_prompt_dict.items():
+                        print(key, value, end=" ")
+                    print('\n')
+                    for key,value in greetings_dict.items():
+                        print(key, value, end=" ")
+                    print('\n')
+                    break
+                        #, name_prompt_dict.items(), greetings_dict.items())
+                elif add_mod_view == '0':
+                    break
+                else:
+                    print('Invalid input, try again')
+                    break
+        elif mode_opt == '2':#1-admin 2-user
+            print_language_options(lang_dict)
+            chosen_lang = language_input()
+            while language_choice_is_valid(lang_dict, chosen_lang) is False:
+                print("Invalid selection. Try again.")
+                chosen_lang = language_input()
+
+            selected_prompt = f"{get_name_input(name_prompt_dict, chosen_lang)} \n"
+            chosen_name = name_input(selected_prompt)
+            greet(chosen_name, greetings_dict, chosen_lang)
+        elif mode_opt == '0':
+            print('Thank you! Visit again!')
+            break
+        else:
+            print('Invalid input for mode! Try again!')
