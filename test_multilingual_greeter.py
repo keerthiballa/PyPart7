@@ -2,7 +2,7 @@ from unittest import TestCase
 from unittest.mock import patch
 from io import StringIO
 import multilingual_greeter
-
+import multilingual_greeter_v2
 
 class MultilingualGreeterTest(TestCase):
 
@@ -93,3 +93,86 @@ class MultilingualGreeterTest(TestCase):
         }
         multilingual_greeter.greet("Jules Winnfield", greetings_dict, 3)
         self.assertEqual("Olá Jules Winnfield\n", stdout_mock.getvalue())
+
+class MultilingualGreeterTest_V2(TestCase):
+    """
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_mode_input(self, stdout_mock):
+        actual = multilingual_greeter_v2.mode_input()
+        self.assertEqual(1, actual)
+
+
+    @patch('builtins.input', return_value="1")
+    def test_language_input(self, user_input):
+        actual = multilingual_greeter.language_input()
+        self.assertEqual(1, actual)"""
+
+    #@patch('')
+    #def test_add_to_all_dicts(self, stdout_mock):
+     #   actual=multilingual_greeter_v2.add_to_all_dicts()
+
+    @patch('builtins.input', side_effect=['Spanish', 'Como te llamas', 'Hola'])
+    def test_add_to_all_dicts(self, mock_input):
+        actual = multilingual_greeter_v2.add_to_all_dicts()
+        expected = ({1: 'English',
+          2: 'Hindi',
+          3: 'Telugu',
+          4: 'Spanish'},
+         {1: 'What is your name?',
+          2: 'Aap ka naam kya hain?',
+          3: 'Mee perenti?',
+          4: 'Como te llamas'},
+         {1: 'Hello', 2: 'Namaste', 3: 'Namaste', 4: 'Hola'})
+        self.assertEqual(actual, expected)
+
+    @patch('builtins.input', side_effect=['English'])
+    def test_add_to_all_dicts_lang_already_exist(self, mock_input):
+        actual = multilingual_greeter_v2.add_to_all_dicts()
+        expected = ({1: 'English',
+                     2: 'Hindi',
+                     3: 'Telugu'
+                     },
+                    {1: 'What is your name?',
+                     2: 'Aap ka naam kya hain?',
+                     3: 'Mee perenti?'
+                     },
+                    {1: 'Hello', 2: 'Namaste', 3: 'Namaste'})
+        self.assertEqual(actual, expected)
+
+    @patch('builtins.input', side_effect=['1','English', 'What is your name ?', 'Greetings'])
+    def test_modify_in_all_dicts(self, mock_input):
+        actual = multilingual_greeter_v2.modify_in_all_dicts()
+        expected = ({1: 'English',
+          2: 'Hindi',
+          3: 'Telugu'
+          },
+         {1: 'What is your name ?',
+          2: 'Aap ka naam kya hain?',
+          3: 'Mee perenti?'},
+         {1: 'Greetings', 2: 'Namaste', 3: 'Namaste'})
+        self.assertEqual(actual, expected)
+
+    @patch('builtins.input', side_effect=['5'])
+    def test_modify_in_all_dicts_invalid_key(self, mock_input):
+        actual = multilingual_greeter_v2.modify_in_all_dicts()
+        expected = ({1: 'English',
+          2: 'Hindi',
+          3: 'Telugu'
+          },
+         {1: 'What is your name?',
+          2: 'Aap ka naam kya hain?',
+          3: 'Mee perenti?'},
+         {1: 'Hello', 2: 'Namaste', 3: 'Namaste'})
+        self.assertEqual(actual, expected)
+
+    def test_view_from_all_dicts(self):
+        actual = multilingual_greeter_v2.view_from_all_dicts()
+        expected = ({1: 'English',
+          2: 'Hindi',
+          3: 'Telugu'
+          },
+         {1: 'What is your name?',
+          2: 'Aap ka naam kya hain?',
+          3: 'Mee perenti?'},
+         {1: 'Hello', 2: 'Namaste', 3: 'Namaste'})
+        self.assertEqual(actual, expected)

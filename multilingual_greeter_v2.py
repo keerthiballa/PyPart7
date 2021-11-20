@@ -110,10 +110,10 @@ def add_to_all_dicts():
         name_prompt_dict[new_key] = input_name_prompt
         input_greetings_dict = input('Enter greetings in the new language:')
         greetings_dict[new_key] = input_greetings_dict
-        return input_lang, name_prompt_dict, greetings_dict
+        return lang_dict, name_prompt_dict, greetings_dict
     else:
         print('The language already exists!')
-        return input_lang, name_prompt_dict, greetings_dict
+        return lang_dict, name_prompt_dict, greetings_dict
 
 def modify_in_all_dicts():
     input_lang_key = int(input('Enter the existing language key to modify:'))
@@ -124,6 +124,18 @@ def modify_in_all_dicts():
         print('Entries have been updated')
     else:
         print('Invalid input')
+    return lang_dict, name_prompt_dict, greetings_dict
+
+def view_from_all_dicts():
+    for key, value in lang_dict.items():
+        print(key, value, end=" ")
+    print('\n')
+    for key, value in name_prompt_dict.items():
+        print(key, value, end=" ")
+    print('\n')
+    for key, value in greetings_dict.items():
+        print(key, value, end=" ")
+    print('\n')
     return lang_dict, name_prompt_dict, greetings_dict
 
 if __name__ == '__main__':
@@ -140,18 +152,8 @@ if __name__ == '__main__':
                     lang_dict, name_prompt_dict, greetings_dict = modify_in_all_dicts()
                     break
                 elif add_mod_view == '3':#1-add 2-modify 3-view
-
-                    for key,value in lang_dict.items():
-                        print(key,value, end=" ")
-                    print('\n')
-                    for key, value in name_prompt_dict.items():
-                        print(key, value, end=" ")
-                    print('\n')
-                    for key,value in greetings_dict.items():
-                        print(key, value, end=" ")
-                    print('\n')
+                    lang_dict, name_prompt_dict, greetings_dict = view_from_all_dicts()
                     break
-                        #, name_prompt_dict.items(), greetings_dict.items())
                 elif add_mod_view == '0':
                     break
                 else:
